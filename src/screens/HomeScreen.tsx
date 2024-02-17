@@ -127,19 +127,19 @@ const HomeScreen = () => {
     ]);
   };
   const loadData = async () => {
-    setLoading(true);
     try {
+      // setLoading(true);
       const savedTodosString: any = await AsyncStorage.getItem('Data');
 
       if (savedTodosString !== null) {
-        setLoading(false);
+        // setLoading(false);
 
         const parseData: any = JSON.parse(savedTodosString);
 
         setTodos(parseData);
       }
     } catch (error) {
-      setLoading(false);
+      // setLoading(false);
 
       console.error('Error loading todos:', error);
     }
@@ -360,7 +360,7 @@ const HomeScreen = () => {
             ))}
           </View>
           {filteredData.length === 0 &&
-            !Loading &&
+            // !Loading &&
             !searchTxt &&
             todos.length !== 0 && (
               <View
@@ -384,7 +384,7 @@ const HomeScreen = () => {
                 </Text>
               </View>
             )}
-          {filteredData.length === 0 && !Loading && searchTxt !== '' && (
+          {filteredData.length === 0 && searchTxt !== '' && (
             <View
               style={{
                 justifyContent: 'center',
@@ -402,44 +402,42 @@ const HomeScreen = () => {
                 }}>{`No To-dos found`}</Text>
             </View>
           )}
-          {Loading ? (
+          {/* {Loading ? (
             <View
               style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
               <ActivityIndicator size={'small'} color={COLORS.primary} />
             </View>
-          ) : (
-            <>
-              {todos.length === 0 && (
-                <View
+          ) : ( */}
+          <>
+            {todos.length === 0 && (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: hp(60),
+                }}>
+                <SvgXml xml={todoSvg} height={hp(5)} width={wp(10)} />
+
+                <Text
                   style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    height: hp(60),
+                    color: 'grey',
+                    fontSize: 15,
+                    fontWeight: '500',
+                    marginTop: hp(1),
                   }}>
-                  <SvgXml xml={todoSvg} height={hp(5)} width={wp(10)} />
+                  No to-dos
+                </Text>
+              </View>
+            )}
 
-                  <Text
-                    style={{
-                      color: 'grey',
-                      fontSize: 15,
-                      fontWeight: '500',
-                      marginTop: hp(1),
-                    }}>
-                    No to-dos
-                  </Text>
-                </View>
-              )}
-
-              {todos.length > 0 && (
-                <FlatList
-                  showsVerticalScrollIndicator={false}
-                  contentContainerStyle={{padding: 20, paddingBottom: 100}}
-                  data={filteredData}
-                  renderItem={({item}) => <ListItem todo={item} />}
-                />
-              )}
-            </>
-          )}
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{padding: 20, paddingBottom: 100}}
+              data={filteredData}
+              renderItem={({item}) => <ListItem todo={item} />}
+            />
+          </>
+          {/* )} */}
         </View>
         <View style={styles.footer}>
           <View
