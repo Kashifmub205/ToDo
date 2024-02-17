@@ -318,6 +318,7 @@ const HomeScreen = () => {
               borderRadius: hp(2),
               borderWidth: 1,
               paddingHorizontal: wp(4),
+              color: COLORS.black,
               alignSelf: 'center',
             }}
             onFocus={() => setIsFocusedSearch(true)}
@@ -468,6 +469,7 @@ const HomeScreen = () => {
                 padding: hp(1),
                 right: wp(2.5),
                 width: wp(60),
+                color: COLORS.black,
               }}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
