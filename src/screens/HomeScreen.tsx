@@ -253,7 +253,6 @@ const HomeScreen = () => {
         todo.task.toLowerCase().includes(searchTxt.toLowerCase()),
       );
     }
-
     switch (activeFilter) {
       case 'Completed':
         filteredData = filteredData.filter((todo: any) => todo.completed);
