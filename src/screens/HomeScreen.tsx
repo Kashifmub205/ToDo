@@ -21,8 +21,6 @@ import {
 } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {useNavigation} from '@react-navigation/native';
-import {ActivityIndicator} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import Checkbox from '@react-native-community/checkbox';
