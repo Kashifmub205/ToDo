@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {COLORS} from './appContants';
 import {
   heightPercentageToDP as hp,
@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     backgroundColor: COLORS.white,
-    paddingBottom: 30,
+    paddingBottom: Platform.OS === 'ios' ? 50 : 30,
     borderTopLeftRadius: hp(4),
     borderTopRightRadius: hp(4),
     justifyContent: 'center',
