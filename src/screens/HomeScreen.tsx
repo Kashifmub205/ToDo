@@ -33,12 +33,12 @@ const HomeScreen = () => {
   const [textInput, setTextInput] = useState('');
   const [searchTxt, setSearchTxt] = useState('');
   const [activeFilter, setActiveFilter] = useState('All To-dos');
-  const [Loading, setLoading] = useState(false);
   const [date, setDate] = useState<any>(new Date());
   const [open, setOpen] = useState(false);
   const [formattedDate, setformattedDate] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [isFocusedSearch, setIsFocusedSearch] = useState(false);
+
   const FilterButtons = [
     {
       id: 1,
@@ -79,7 +79,7 @@ const HomeScreen = () => {
   const markTodoComplete = (todoId: number, completed: boolean) => {
     const newTodosItem = todos.map((item: any) => {
       if (item.id === todoId) {
-        return {...item, completed}; // Update the completed status
+        return {...item, completed};
       }
       return item;
     });
@@ -90,11 +90,14 @@ const HomeScreen = () => {
     markTodoComplete(todo.id, completed);
   };
   const handleSearchChange = (text: any) => {
+    if (todos.length == 0) {
+      Alert.alert('Nothing to search');
+      return;
+    }
     setSearchTxt(text);
   };
 
   const deleteTodo = (todoId: number) => {
-    // Find the index of the todo with the specified id
     const index = todos.findIndex((item: any) => item.id === todoId);
 
     if (index !== -1) {
@@ -128,19 +131,14 @@ const HomeScreen = () => {
   };
   const loadData = async () => {
     try {
-      // setLoading(true);
       const savedTodosString: any = await AsyncStorage.getItem('Data');
 
       if (savedTodosString !== null) {
-        // setLoading(false);
-
         const parseData: any = JSON.parse(savedTodosString);
 
         setTodos(parseData);
       }
     } catch (error) {
-      // setLoading(false);
-
       console.error('Error loading todos:', error);
     }
   };
@@ -212,27 +210,27 @@ const HomeScreen = () => {
           }}>
           <Text
             numberOfLines={1}
-            style={{
-              fontWeight: todo?.completed ? 'normal' : '600',
-              fontSize: 15,
-
-              width: wp(60),
-              color: todo?.completed ? 'grey' : COLORS.black,
-              textDecorationLine: todo?.completed ? 'line-through' : 'none',
-            }}>
+            style={[
+              styles.task,
+              {
+                fontWeight: todo?.completed ? 'normal' : '600',
+                color: todo?.completed ? 'grey' : COLORS.black,
+                textDecorationLine: todo?.completed ? 'line-through' : 'none',
+              },
+            ]}>
             {todo?.task}
           </Text>
           <Text
-            style={{
-              fontWeight: 'normal',
-              fontSize: 15,
-              marginTop: hp(0.5),
-              color: isPastDue
-                ? 'red'
-                : todo?.completed
-                ? COLORS.completeTime
-                : COLORS.normalTime,
-            }}>
+            style={[
+              styles.dueDate,
+              {
+                color: isPastDue
+                  ? 'red'
+                  : todo?.completed
+                  ? COLORS.completeTime
+                  : COLORS.normalTime,
+              },
+            ]}>
             {todo?.dueDate}
           </Text>
         </View>
@@ -271,174 +269,109 @@ const HomeScreen = () => {
 
   return (
     <KeyboardAvoidingView
-      style={{flex: 1}}
+      style={styles.keyboardAvoidingView}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <SafeAreaView
-        style={{
-          flex: 1,
-          backgroundColor: '#fff',
-          justifyContent: 'space-between',
-        }}>
-        <View style={{flex: 1}}>
-          <View style={styles.header}>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 30,
-                marginLeft: wp(3),
-                color: COLORS.black,
-              }}>
-              To-dos
-            </Text>
-            <MaterialIcons
-              name="delete-forever"
-              size={25}
-              color="grey"
-              onPress={clearAllTodos}
-            />
-          </View>
-          <DatePicker
-            modal
-            open={open}
-            date={date}
-            onConfirm={(date: any) => {
-              handleDate(date);
-            }}
-            onCancel={() => {
-              setOpen(false);
-            }}
+      <SafeAreaView style={styles.safeAreaView}>
+        <View style={styles.header}>
+          <Text style={styles.title}>To-dos</Text>
+          <MaterialIcons
+            name="delete-forever"
+            size={25}
+            color="grey"
+            onPress={clearAllTodos}
           />
-          <TextInput
-            value={searchTxt}
-            placeholder="Search to-dos"
-            style={{
-              padding: hp(1.5),
-              borderColor: isFocusedSearch ? COLORS.primary : COLORS.border,
-              width: wp(85),
-              borderRadius: hp(2),
-              borderWidth: 1,
-              paddingHorizontal: wp(4),
-              color: COLORS.black,
-              alignSelf: 'center',
-            }}
-            onFocus={() => setIsFocusedSearch(true)}
-            onBlur={() => setIsFocusedSearch(false)}
-            onChangeText={text => handleSearchChange(text)}
-          />
+        </View>
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              gap: wp(4),
-              marginTop: 20,
-              width: wp(100),
-              alignSelf: 'center',
-            }}>
-            {FilterButtons.map(item => (
-              <TouchableOpacity
-                key={item.id}
-                onPress={() => handleFilterPress(item.title)}
-                style={{
-                  paddingHorizontal: wp(3),
-                  paddingVertical: 10,
-                  borderRadius: hp(2),
+        <DatePicker
+          modal
+          open={open}
+          date={date}
+          onConfirm={(date: any) => {
+            handleDate(date);
+          }}
+          onCancel={() => {
+            setOpen(false);
+          }}
+        />
+        <TextInput
+          value={searchTxt}
+          placeholderTextColor={'silver'}
+          placeholder="Search to-dos"
+          style={[
+            styles.search,
+            {
+              borderColor: isFocusedSearch ? COLORS.primary : COLORS.border,
+            },
+          ]}
+          onFocus={() => setIsFocusedSearch(true)}
+          onBlur={() => setIsFocusedSearch(false)}
+          onChangeText={text => handleSearchChange(text)}
+        />
+
+        <View style={styles.filterButtons}>
+          {FilterButtons.map(item => (
+            <TouchableOpacity
+              key={item.id}
+              onPress={() => handleFilterPress(item.title)}
+              style={[
+                styles.filterTouchableStyle,
+                {
                   backgroundColor:
                     activeFilter === item.title
                       ? COLORS.primary
                       : COLORS.secondary,
-                }}>
-                <Text
-                  style={{
+                },
+              ]}>
+              <Text
+                style={[
+                  styles.filterButtonText,
+                  {
                     color: activeFilter ? COLORS.white : COLORS.black,
-                    fontSize: 14,
-                    fontWeight: '500',
-                  }}>
-                  {item.title}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-          {filteredData.length === 0 &&
-            // !Loading &&
-            !searchTxt &&
-            todos.length !== 0 && (
-              <View
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: hp(50),
-                }}>
-                <SvgXml xml={todoSvg} height={hp(5)} width={wp(10)} />
+                  },
+                ]}>
+                {item.title}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
-                <Text
-                  style={{
-                    color: 'grey',
-                    fontSize: 15,
-                    fontWeight: '500',
-                    marginTop: hp(1),
-                  }}>
-                  {`No ${
-                    activeFilter === 'Completed' ? 'Completed' : 'InCompleted'
-                  } to-dos`}
-                </Text>
-              </View>
-            )}
-          {filteredData.length === 0 && searchTxt !== '' && (
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: hp(50),
-              }}>
+        {filteredData.length === 0 && !searchTxt && todos.length !== 0 && (
+          <View style={styles.filterResult}>
+            <SvgXml xml={todoSvg} height={hp(5)} width={wp(10)} />
+
+            <Text style={styles.filterText}>
+              {`No ${
+                activeFilter === 'Completed' ? 'Completed' : 'InCompleted'
+              } to-dos`}
+            </Text>
+          </View>
+        )}
+
+        {filteredData.length === 0 && searchTxt !== '' && (
+          <View style={styles.searchResult}>
+            <SvgXml xml={todoSvg} height={hp(5)} width={wp(10)} />
+
+            <Text style={styles.searchText}>{`No To-dos found`}</Text>
+          </View>
+        )}
+
+        <>
+          {todos.length === 0 && (
+            <View style={styles.todoLengthView}>
               <SvgXml xml={todoSvg} height={hp(5)} width={wp(10)} />
 
-              <Text
-                style={{
-                  color: 'grey',
-                  fontSize: 15,
-                  fontWeight: '500',
-                  marginTop: hp(1),
-                }}>{`No To-dos found`}</Text>
+              <Text style={styles.todoText}>No to-dos</Text>
             </View>
           )}
-          {/* {Loading ? (
-            <View
-              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-              <ActivityIndicator size={'small'} color={COLORS.primary} />
-            </View>
-          ) : ( */}
-          <>
-            {todos.length === 0 && (
-              <View
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: hp(60),
-                }}>
-                <SvgXml xml={todoSvg} height={hp(5)} width={wp(10)} />
 
-                <Text
-                  style={{
-                    color: 'grey',
-                    fontSize: 15,
-                    fontWeight: '500',
-                    marginTop: hp(1),
-                  }}>
-                  No to-dos
-                </Text>
-              </View>
-            )}
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{padding: hp(3), paddingBottom: 100}}
+            data={filteredData}
+            renderItem={({item}) => <ListItem todo={item} />}
+          />
+        </>
 
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{padding: 20, paddingBottom: 100}}
-              data={filteredData}
-              renderItem={({item}) => <ListItem todo={item} />}
-            />
-          </>
-          {/* )} */}
-        </View>
         <View style={styles.footer}>
           <View
             style={[
@@ -450,25 +383,15 @@ const HomeScreen = () => {
                 width: wp(100),
               },
             ]}>
-            <TouchableOpacity
-              onPress={() => setOpen(true)}
-              style={{
-                width: wp(10),
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+            <TouchableOpacity onPress={() => setOpen(true)} style={styles.date}>
               <MaterialIcons name="date-range" size={20} color={'grey'} />
             </TouchableOpacity>
 
             <TextInput
               value={textInput}
+              placeholderTextColor={'silver'}
               placeholder="Add To-dos"
-              style={{
-                padding: hp(1),
-                right: wp(2.5),
-                width: wp(60),
-                color: COLORS.black,
-              }}
+              style={styles.addTodo}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               onChangeText={text => setTextInput(text)}

@@ -5,6 +5,14 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 export const styles = StyleSheet.create({
+  safeAreaView: {
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent: 'space-between',
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
   footer: {
     borderWidth: 2,
     borderColor: COLORS.border,
@@ -13,10 +21,98 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     backgroundColor: COLORS.white,
-    paddingBottom: 50,
+    paddingBottom: 30,
     borderTopLeftRadius: hp(4),
     borderTopRightRadius: hp(4),
     justifyContent: 'center',
+  },
+  task: {
+    fontSize: 15,
+    right: wp(1),
+    width: wp(60),
+  },
+  filterButtonText: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  filterTouchableStyle: {
+    paddingHorizontal: wp(3),
+    paddingVertical: 10,
+    borderRadius: hp(2),
+  },
+  dueDate: {
+    fontWeight: 'normal',
+    fontSize: 15,
+    marginTop: hp(0.5),
+  },
+  filterButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: wp(4),
+    marginTop: 20,
+    width: wp(100),
+    alignSelf: 'center',
+  },
+  filterText: {
+    color: 'grey',
+    fontSize: 15,
+    fontWeight: '500',
+    marginTop: hp(1),
+  },
+  filterResult: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: hp(20),
+  },
+  searchResult: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: hp(4),
+    // height: hp(20),
+  },
+  searchText: {
+    color: 'grey',
+    fontSize: 15,
+    fontWeight: '500',
+    marginTop: hp(1),
+  },
+  todoLengthView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: hp(10),
+  },
+  date: {
+    width: wp(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addTodo: {
+    padding: hp(1),
+    right: wp(2.5),
+    width: wp(60),
+    color: COLORS.black,
+  },
+  todoText: {
+    color: 'grey',
+    fontSize: 15,
+    fontWeight: '500',
+    marginTop: hp(1),
+  },
+
+  title: {
+    fontWeight: 'bold',
+    fontSize: 30,
+    marginLeft: wp(3),
+    color: COLORS.black,
+  },
+  search: {
+    width: wp(85),
+    borderRadius: hp(2),
+    borderWidth: 1,
+    paddingHorizontal: wp(4),
+    color: COLORS.black,
+    alignSelf: 'center',
+    padding: hp(1.5),
   },
   inputContainer: {
     paddingHorizontal: 20,
@@ -36,9 +132,6 @@ export const styles = StyleSheet.create({
     elevation: 40,
     borderRadius: 25,
     bottom: hp(0.2),
-    // top: hp(1),
-    // marginTop: hp(2),
-
     justifyContent: 'center',
     alignItems: 'center',
   },
