@@ -26,6 +26,7 @@ import moment from 'moment';
 import Checkbox from '@react-native-community/checkbox';
 import {SvgXml} from 'react-native-svg';
 import {todoSvg} from '../assets/svgs/todoSvg';
+import {useNavigation} from '@react-navigation/native';
 const HomeScreen = () => {
   const [todos, setTodos] = useState<any>([]);
   const [textInput, setTextInput] = useState('');
@@ -36,7 +37,7 @@ const HomeScreen = () => {
   const [formattedDate, setformattedDate] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [isFocusedSearch, setIsFocusedSearch] = useState(false);
-
+  const navigation: any = useNavigation();
   const FilterButtons = [
     {
       id: 1,

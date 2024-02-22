@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
   },
   task: {
     fontSize: 15,
-    right: wp(1),
+    // right: wp(1),
     width: wp(60),
   },
   filterButtonText: {
